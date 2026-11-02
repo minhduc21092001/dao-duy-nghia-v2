@@ -159,7 +159,7 @@ function taoLichTrinh(muc, lay) {
     const viec = lay(`Lịch trình ${n} - hoạt động`);
     const icon = lay(`Lịch trình ${n} - biểu tượng`);
     kiemTraFile(icon, `Lịch trình ${n} - biểu tượng`);
-    const anhIcon = icon ? `<span class="absolute top-1/2 flex items-center justify-center -translate-y-1/2 right-full" style="margin-right:22px"><img src="${escAttr(encodeURI(icon))}" alt="" class="block shrink-0 object-contain" style="width:64px;height:64px"></span>` : '';
+    const anhIcon = icon ? `<span class="absolute top-1/2 flex items-center justify-center -translate-y-1/2 right-full" style="margin-right:22px"><img src="${escAttr(encodeURI(icon))}" alt="" class="block shrink-0 object-contain" style="width:64px;height:64px;max-width:none"></span>` : '';
     // Khoảng cách giữa các mốc (row-gap của #timeline-list trong thiep.html) là 52px, đường kẻ nối kéo dài 3.5rem cho liền
     const tren = i === 0 ? '50%' : '-3.5rem', duoi = i === so.length - 1 ? '50%' : '-3.5rem';
     return `<li class="contents"><span class="pt-0.5 text-right text-[16px] md:text-[17px] tabular-nums tracking-wide leading-snug" style="color:#ece4d8;font-family:&quot;Times New Roman&quot;, serif"><span class="relative inline-block">${anhIcon}${gio}</span></span>`

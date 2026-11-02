@@ -100,7 +100,7 @@ Dán link Google Maps của nhà hàng (Google Maps → chọn địa điểm �
 **Bản đồ - toạ độ** (dạng `vĩ độ,kinh độ`) làm khung bản đồ ghim đúng chỗ trên cả điện thoại lẫn máy tính; nếu chỉ dùng địa chỉ chữ thì điện thoại có thể không tìm ra địa điểm. Cách lấy: Google Maps → bấm giữ vào đúng điểm (hoặc chọn địa điểm) → toạ độ hiện ở đầu ô tìm kiếm / menu, bấm để chép. Để trống thì dùng link/địa chỉ như trên.
 
 - Bản đồ - tiêu đề: Tiệc cưới sẽ tổ chức tại
-- Nơi tổ chức tiệc: Trung tâm Hội nghị - Tiệc Cưới Long Biên Palace | Số 6 Tân Sơn, Phường An Hội Tây, TP.Hồ Chí Minh
+- Nơi tổ chức tiệc: Trung tâm Hội nghị - Tiệc Cưới Long Biên Palace | Số 6 Tân Sơn, Phường An Hội Tây, | TP.Hồ Chí Minh
 - Link Google Maps: https://www.google.com/maps?q=Nh%C3%A0+H%C3%A0ng+Long+Bi%C3%AAn,+s%E1%BB%91+6+T%C3%A2n+S%C6%A1n,+ph%C6%B0%E1%BB%9Dng+An+H%E1%BB%99i+T%C3%A2y,+TP+H%E1%BB%93+Ch%C3%AD+Minh
 - Bản đồ - toạ độ: 10.8300766,106.6500993
 - Nút chỉ đường: Chỉ đường
@@ -212,7 +212,7 @@ Thiệp nhà gái giống hệt thiệp nhà trai, **trừ các dòng dưới đ
 - Nhà gái - Ngày âm lịch: (Nhằm ngày 16 tháng 10 năm Bính Ngọ)
 - Nhà gái - Giờ đón khách: 10:30
 - Nhà gái - Giờ khai tiệc: 11:00
-- Nhà gái - Nơi tổ chức tiệc: Tư Gia Nhà Gái | Số 21 Đường Cách Mạng Tháng 8, Xã Ia Grai, Tỉnh Gia Lai
+- Nhà gái - Nơi tổ chức tiệc: Tư Gia Nhà Gái | Số 21 Đường Cách Mạng Tháng 8, | Xã Ia Grai, Tỉnh Gia Lai
 - Nhà gái - Link Google Maps: https://maps.app.goo.gl/5iZtX7tck2Th7tjq8
 - Nhà gái - Bản đồ - toạ độ: 13.9656736,107.8364508
 - Nhà gái - Hiện lịch trình (có/không): có

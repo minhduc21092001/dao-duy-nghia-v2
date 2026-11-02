@@ -96,3 +96,5 @@ dialog::backdrop{background:#0009}
 .dem-nguoc b{font-size:24px;font-weight:500;line-height:1.1;font-variant-numeric:tabular-nums}
 .dem-nguoc small{margin-top:2px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:rgba(236,228,216,.7)}
 @media(min-width:768px){.dem-nguoc{gap:14px}.dem-nguoc>div{min-width:72px}.dem-nguoc b{font-size:30px}}
+/* Địa chỉ tiệc: dòng nào phải xuống dòng thì chia đều, không để một chữ (vd. "Minh") rơi xuống một mình */
+[data-field="Nơi tổ chức tiệc"]{text-wrap:balance}
