@@ -210,21 +210,18 @@ Thiệp nhà gái giống hệt thiệp nhà trai, **trừ các dòng dưới đ
 - Nhà gái - Lễ cưới - chữ nối giờ: -
 - Nhà gái - Giờ làm lễ kết thúc: -
 - Nhà gái - Ngày âm lịch: (Nhằm ngày 16 tháng 10 năm Bính Ngọ)
-- Nhà gái - Giờ đón khách: -
+- Nhà gái - Giờ đón khách: 10:30
 - Nhà gái - Giờ khai tiệc: 11:00
 - Nhà gái - Nơi tổ chức tiệc: Tư Gia Nhà Gái | Số 21 Đường Cách Mạng Tháng 8, Xã Ia Grai, Tỉnh Gia Lai
 - Nhà gái - Link Google Maps: https://maps.app.goo.gl/5iZtX7tck2Th7tjq8
 - Nhà gái - Bản đồ - toạ độ: 13.9656736,107.8364508
-- Nhà gái - Hiện lịch trình (có/không): không
-- Nhà gái - Lịch trình 1 - giờ:
-- Nhà gái - Lịch trình 1 - hoạt động:
-- Nhà gái - Lịch trình 1 - biểu tượng:
-- Nhà gái - Lịch trình 2 - giờ:
-- Nhà gái - Lịch trình 2 - hoạt động:
-- Nhà gái - Lịch trình 2 - biểu tượng:
-- Nhà gái - Lịch trình 3 - giờ:
-- Nhà gái - Lịch trình 3 - hoạt động:
-- Nhà gái - Lịch trình 3 - biểu tượng:
-- Nhà gái - Lịch trình 4 - giờ:
-- Nhà gái - Lịch trình 4 - hoạt động:
-- Nhà gái - Lịch trình 4 - biểu tượng:
+- Nhà gái - Hiện lịch trình (có/không): có
+- Nhà gái - Lịch trình 1 - giờ: 10:30
+- Nhà gái - Lịch trình 1 - hoạt động: Đón khách
+- Nhà gái - Lịch trình 1 - biểu tượng: anh/trang-tri/lich-trinh-don-khach.png
+- Nhà gái - Lịch trình 2 - giờ: 11:00
+- Nhà gái - Lịch trình 2 - hoạt động: Khai tiệc
+- Nhà gái - Lịch trình 2 - biểu tượng: anh/trang-tri/lich-trinh-khai-tiec.png
+- Nhà gái - Lịch trình 3 - giờ: 12:00
+- Nhà gái - Lịch trình 3 - hoạt động: Hát với nhau
+- Nhà gái - Lịch trình 3 - biểu tượng: anh/trang-tri/lich-trinh-hat.png
