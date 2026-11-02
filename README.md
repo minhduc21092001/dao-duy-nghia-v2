@@ -88,7 +88,7 @@ Thiệp chạy dưới dạng **Cloudflare Worker** (cấu hình trong `wrangler
 **Từ máy, không cần GitHub:** `npm run deploy` (lần đầu mở trình duyệt để đăng nhập Cloudflare).
 
 **Mật khẩu** — Worker → *Settings → Variables and Secrets → Add*, chọn loại **Secret** (loại *Text* sẽ bị xoá mỗi lần deploy):
-- `MAT_KHAU_THONG_KE` (**bắt buộc** để mở trang thống kê; chưa đặt thì không ai xem được danh sách khách). Muốn mỗi bên một mật khẩu thì đặt thêm `MAT_KHAU_THONG_KE_NHA_TRAI` và/hoặc `MAT_KHAU_THONG_KE_NHA_GAI`.
+- `MAT_KHAU_THONG_KE` (tuỳ chọn): không đặt thì trang thống kê mở không cần mật khẩu — ai biết địa chỉ `/nha-trai/thong-ke/`, `/nha-gai/thong-ke/` cũng xem và xoá được. Muốn mỗi bên một mật khẩu thì đặt `MAT_KHAU_THONG_KE_NHA_TRAI` và/hoặc `MAT_KHAU_THONG_KE_NHA_GAI`.
 - `MAT_KHAU_TAO_LINK` (tuỳ chọn): chỉ người biết mới tạo được link.
 
 **Địa chỉ website** ở mục 15 trong `noi-dung.md` phải đúng địa chỉ thật (hiện là `https://duy-nghia-thanh-ha.thiepcuoionline.workers.dev`), đổi tên miền thì sửa lại — **ảnh xem trước khi gửi link chỉ hiện khi địa chỉ này đúng**. Thử bằng một **link mới** (Zalo/Messenger nhớ khung xem trước cũ của link đã gửi).

@@ -7,7 +7,7 @@
  *   POST /api/thong-ke   { ben, matKhau, xoa? }              -> { danhSach }     trang /nha-trai|nha-gai/thong-ke/
  *   GET  /nha-trai/<ten>, /nha-gai/<ten> (và /<ten> của link cũ) -> thiệp có tiêu đề xem trước + tên khách riêng
  *   GET  đường dẫn lạ khác -> thiệp của bên đó (hoặc thiệp nhà trai)
- * Dữ liệu lưu trong KV "LIEN_KET". Mật khẩu (Settings → Variables and Secrets, loại Secret):
+ * Dữ liệu lưu trong KV "LIEN_KET". Mật khẩu tuỳ chọn (Settings → Variables and Secrets, loại Secret; không đặt = không cần):
  *   MAT_KHAU_TAO_LINK, MAT_KHAU_THONG_KE, MAT_KHAU_THONG_KE_NHA_TRAI, MAT_KHAU_THONG_KE_NHA_GAI.
  */
 import { CAC_BEN, taoLinkMoi, chenThongTin, layDuongDan, benCuaLink } from '../chung/lien-ket.mjs';
@@ -22,7 +22,8 @@ const json = (trangThai, duLieu) => new Response(JSON.stringify(duLieu), {
 const API = {
   '/api/tao-link': (kho, body, env) => taoLinkMoi(kho, body, env.MAT_KHAU_TAO_LINK),
   '/api/xac-nhan': (kho, body) => luuXacNhan(kho, body),
-  '/api/thong-ke': (kho, body, env) => thongKe(kho, body, layMatKhau(env, benThongKe(body) || 'x'), true),
+  // Không đặt mật khẩu thì ai có địa chỉ trang thống kê cũng xem được
+  '/api/thong-ke': (kho, body, env) => thongKe(kho, body, layMatKhau(env, benThongKe(body) || 'x'), false),
 };
 
 async function xuLyApi(request, env, xuLy) {
