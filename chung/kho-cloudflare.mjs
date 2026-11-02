@@ -1,7 +1,5 @@
 /*
- * Kho dữ liệu trên Cloudflare KV (link ngắn + xác nhận tham dự). Gắn KV namespace vào dự án Pages với tên biến
- * (binding) LIEN_KET: Cloudflare → Workers & Pages → dự án → Settings → Bindings → Add → KV namespace.
- * (Để ngoài thư mục functions/ vì mọi file trong đó đều thành đường dẫn trên website.)
+ * Kho dữ liệu trên Cloudflare KV (link ngắn + xác nhận tham dự), binding LIEN_KET khai báo trong wrangler.jsonc.
  */
 export function layKho(env) {
   const kv = env.LIEN_KET;

@@ -185,11 +185,11 @@ Ghi `có` hoặc `không`.
 
 ## 15. Cài đặt website
 
-Đường dẫn gốc: để `/` (Cloudflare Pages luôn đặt thiệp ở gốc tên miền).
-**Địa chỉ website** phải là địa chỉ thật trên Cloudflare (vd. `https://duy-nghia-thanh-ha.pages.dev`, hoặc tên miền riêng nếu có) thì ảnh xem trước khi gửi link mới hiện.
+Đường dẫn gốc: để `/` (Cloudflare luôn đặt thiệp ở gốc tên miền).
+**Địa chỉ website** phải là địa chỉ thật trên Cloudflare (vd. `https://duy-nghia-thanh-ha.thiepcuoionline.workers.dev`, hoặc tên miền riêng nếu có) thì ảnh xem trước khi gửi link mới hiện.
 
 - Đường dẫn gốc: /
-- Địa chỉ website: https://duy-nghia-thanh-ha.pages.dev
+- Địa chỉ website: https://duy-nghia-thanh-ha.thiepcuoionline.workers.dev
 
 ## 16. Thiệp nhà gái (/nha-gai/)
 

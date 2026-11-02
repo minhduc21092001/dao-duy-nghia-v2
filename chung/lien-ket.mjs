@@ -1,5 +1,5 @@
 /*
- * Link ngắn cho từng khách: dùng chung cho Cloudflare Pages Functions (functions/) và máy chủ xem thử (build.js --serve).
+ * Link ngắn cho từng khách: dùng chung cho Cloudflare Worker (worker/index.mjs) và máy chủ xem thử (build.js --serve).
  *
  * Mỗi link ngắn (vd. /nha-trai/ban-duc-va-nguoi-thuong, /nha-gai/co-lan) được lưu kèm tiêu đề và tên khách.
  * Link cũ không có /nha-trai/ hay /nha-gai/ (vd. /ban-duc) vẫn mở được, hiện thiệp nhà trai.

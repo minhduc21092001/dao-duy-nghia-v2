@@ -365,20 +365,14 @@ function build() {
 <style>body{margin:0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;font-family:system-ui,sans-serif;background:linear-gradient(160deg,#fbf6f0,#efe2d6);color:#3b2a2c}a{display:block;width:240px;text-align:center;padding:14px;border-radius:14px;background:#511419;color:#fff;font-weight:700;text-decoration:none}</style></head>
 <body><h1 style="font-weight:600;font-size:22px;margin:0 0 6px">Thống kê xác nhận tham dự</h1>${trang.map((t) => `<a href="${goc}${t.ben}/thong-ke/">${escHtml(t.ten)}</a>`).join('')}</body></html>
 `);
-  // Trang chủ hiện thiệp nhà trai. Không có 404.html nên Cloudflare Pages hiện trang chủ cho mọi đường dẫn lạ
-  // (link cũ không có /nha-trai/); link ngắn và /nha-gai/<lạ> do functions/[[path]].js xử lý.
+  // Trang chủ hiện thiệp nhà trai. Đường dẫn không có file (link ngắn, /nha-gai/<lạ>, link cũ không có /nha-trai/)
+  // do Cloudflare Worker (worker/index.mjs) xử lý.
   fs.writeFileSync(path.join(RA, 'index.html'), trang[0].thiep);
   // /tao-link/ cũ chuyển sang trang tạo link nhà trai
   const sangTaoLink = `${goc}${trang[0].ben}/tao-link/`;
   fs.mkdirSync(path.join(RA, 'tao-link'));
   fs.writeFileSync(path.join(RA, 'tao-link', 'index.html'), `<!DOCTYPE html><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=${sangTaoLink}"><script>location.replace(${JSON.stringify(sangTaoLink)})</script>\n`);
   fs.writeFileSync(path.join(RA, '_redirects'), `/tao-link  ${sangTaoLink}  301\n`);
-  // Cloudflare Pages Functions chỉ chạy cho các trang, không chạy cho ảnh/css/js/nhạc (đỡ tốn lượt miễn phí)
-  fs.writeFileSync(path.join(RA, '_routes.json'), JSON.stringify({
-    version: 1,
-    include: ['/*'],
-    exclude: ['/anh/*', '/css/*', '/js/*', '/fonts/*', '/nhac/*', '/tao-link/*', '/thong-ke/*', ...trang.flatMap((t) => [`/${t.ben}/tao-link/*`, `/${t.ben}/thong-ke/*`])],
-  }, null, 2) + '\n');
 
   console.log(`✅ Đã tạo website/ (${Date.now() - batDau} ms)`);
 }
@@ -391,7 +385,7 @@ const KIEU = {
   '.ttf': 'font/ttf', '.otf': 'font/otf', '.woff': 'font/woff', '.woff2': 'font/woff2',
 };
 
-// Link ngắn + xác nhận tham dự khi xem thử trên máy: giống functions/ trên Cloudflare nhưng lưu vào file thay cho Cloudflare KV
+// Link ngắn + xác nhận tham dự khi xem thử trên máy: giống worker/index.mjs trên Cloudflare nhưng lưu vào file thay cho Cloudflare KV
 function khoFile(file) {
   const doc = () => { try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch (e) { return {}; } };
   const ghi = (tatCa) => fs.writeFileSync(file, JSON.stringify(tatCa, null, 2));

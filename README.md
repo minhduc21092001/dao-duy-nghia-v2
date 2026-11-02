@@ -21,7 +21,8 @@ minimalism-do-dam/
 │   ├── tao-link.html      trang tạo link riêng cho từng khách
 │   ├── thong-ke.html      trang thống kê xác nhận tham dự (/nha-trai/thong-ke/, /nha-gai/thong-ke/)
 │   └── css/  js/  fonts/
-├── functions/             ← Cloudflare Pages Functions: link ngắn (api/tao-link.js, [[path]].js), xác nhận tham dự (api/xac-nhan.js, api/thong-ke.js)
+├── worker/index.mjs       ← Cloudflare Worker: link ngắn, xác nhận tham dự, thống kê
+├── wrangler.jsonc         ← cấu hình Cloudflare Worker (tên, thư mục website/, KV)
 ├── chung/                 ← mã link ngắn + xác nhận tham dự dùng chung cho Cloudflare và máy chủ xem thử
 ├── build.js               ← ghép noi-dung.md + ảnh + khung → thư mục website/
 ├── website/               ← KẾT QUẢ để đăng lên mạng (tự tạo, đừng sửa tay)
@@ -74,29 +75,25 @@ Trên trang tạo link, gõ **một ô duy nhất: Người nhận**, rồi bấ
 - Trên thiệp, tên đó hiện ngay dưới chữ "Thân Mời" ở phong thư.
 - Link vừa tạo tự lưu vào danh sách bên dưới (chỉ trên trình duyệt bạn đang dùng, mỗi bên một danh sách).
 
-Link ngắn chạy nhờ thư mục `functions/` (Cloudflare Pages Functions), lưu trong **Cloudflare KV**. Cần deploy qua Git hoặc `npm run deploy` (bên dưới). Kéo thả thư mục `website/` trên trang Cloudflare thì không có chức năng này: trang tạo link sẽ tạm dùng link dài `?khach=...`.
+Link ngắn chạy nhờ Cloudflare Worker (`worker/index.mjs`), lưu trong **Cloudflare KV**. Cần deploy qua Git hoặc `npm run deploy` (bên dưới). Kéo thả thư mục `website/` trên trang Cloudflare thì không có chức năng này: trang tạo link sẽ tạm dùng link dài `?khach=...`.
 
-## Đăng lên mạng (Cloudflare Pages)
+## Đăng lên mạng (Cloudflare Workers)
 
-**Bước 1 — tạo kho lưu link ngắn (KV), làm một lần:** Cloudflare → *Storage & Databases → Workers KV → Create* → đặt tên `thiep-cuoi-lien-ket`.
+Thiệp chạy dưới dạng **Cloudflare Worker** (cấu hình trong `wrangler.jsonc`): file tĩnh trong `website/` do Cloudflare trả thẳng, còn link ngắn, xác nhận tham dự, thống kê do `worker/index.mjs` xử lý, lưu trong **Cloudflare KV** (binding `LIEN_KET`, lần deploy đầu Wrangler tự tạo).
 
-**Bước 2 — đưa thiệp lên.** Chọn một trong hai cách:
+**Qua GitHub (đang dùng, đẩy code là tự cập nhật):** Cloudflare → *Workers & Pages* → Worker `duy-nghia-thanh-ha` → *Settings → Build*:
+- *Build command*: `node build.js`
+- *Deploy command*: `npx wrangler deploy` (không thêm tham số, mọi cài đặt nằm trong `wrangler.jsonc`)
 
-- **Cách A: qua GitHub (khuyên dùng, đẩy code là tự cập nhật)**
-  1. Tạo repo GitHub, đưa thư mục này lên (`anh-goc/`, `_ban-cu-codex/`, `website/` đã nằm trong `.gitignore`, không bị đẩy lên).
-  2. Cloudflare → *Workers & Pages → Create → Pages → Connect to Git* → chọn repo.
-  3. Cài đặt build: *Framework preset* `None`, *Build command* `node build.js`, *Build output directory* `website`. Đặt tên dự án `duy-nghia-thanh-ha` (địa chỉ sẽ là `https://duy-nghia-thanh-ha.pages.dev`).
-- **Cách B: từ máy, không cần GitHub:** chạy `npm run deploy`. Lần đầu sẽ mở trình duyệt để đăng nhập Cloudflare, và hỏi tạo dự án `duy-nghia-thanh-ha` thì chọn đồng ý.
+**Từ máy, không cần GitHub:** `npm run deploy` (lần đầu mở trình duyệt để đăng nhập Cloudflare).
 
-**Bước 3 — gắn KV vào dự án:** dự án → *Settings → Bindings → Add → KV namespace*: tên biến `LIEN_KET`, chọn `thiep-cuoi-lien-ket`. Gắn xong phải **deploy lại một lần** (Cách A: *Deployments → Retry deployment*; Cách B: chạy lại `npm run deploy`).
+**Mật khẩu** — Worker → *Settings → Variables and Secrets → Add*, chọn loại **Secret** (loại *Text* sẽ bị xoá mỗi lần deploy):
+- `MAT_KHAU_THONG_KE` (**bắt buộc** để mở trang thống kê; chưa đặt thì không ai xem được danh sách khách). Muốn mỗi bên một mật khẩu thì đặt thêm `MAT_KHAU_THONG_KE_NHA_TRAI` và/hoặc `MAT_KHAU_THONG_KE_NHA_GAI`.
+- `MAT_KHAU_TAO_LINK` (tuỳ chọn): chỉ người biết mới tạo được link.
 
-**Bước 4 — mật khẩu:** *Settings → Variables and Secrets → Add* (chọn loại *Secret*), xong deploy lại:
-- `MAT_KHAU_THONG_KE` (**bắt buộc** để mở trang thống kê; chưa đặt thì trang báo lỗi, không ai xem được danh sách khách). Muốn mỗi bên một mật khẩu (vd. nhà gái chỉ xem được khách nhà gái) thì đặt thêm `MAT_KHAU_THONG_KE_NHA_TRAI` và/hoặc `MAT_KHAU_THONG_KE_NHA_GAI` — bên nào có biến riêng thì dùng mật khẩu riêng.
-- `MAT_KHAU_TAO_LINK` (tuỳ chọn): chỉ người biết mới tạo được link. Nếu không đặt `MAT_KHAU_THONG_KE` thì trang thống kê dùng luôn mật khẩu này.
+**Địa chỉ website** ở mục 15 trong `noi-dung.md` phải đúng địa chỉ thật (hiện là `https://duy-nghia-thanh-ha.thiepcuoionline.workers.dev`), đổi tên miền thì sửa lại — **ảnh xem trước khi gửi link chỉ hiện khi địa chỉ này đúng**. Thử bằng một **link mới** (Zalo/Messenger nhớ khung xem trước cũ của link đã gửi).
 
-**Bước 5:** địa chỉ thật khác `https://duy-nghia-thanh-ha.pages.dev` (tên bị trùng, hoặc dùng tên miền riêng) thì sửa `Địa chỉ website` ở mục 15 trong `noi-dung.md` rồi deploy lại. **Ảnh xem trước khi gửi link chỉ hiện khi địa chỉ này đúng.** Thử bằng một **link mới** (Zalo/Messenger nhớ khung xem trước cũ của link đã gửi).
-
-**Thử chức năng Cloudflare trên máy (tuỳ chọn):** `npm run cf-dev` chạy y như trên Cloudflare (cả link ngắn) ở `http://localhost:8788`. Còn `npm run dev` vẫn là cách xem thử nhanh nhất khi sửa nội dung.
+**Thử y như trên Cloudflare (tuỳ chọn):** `npm run cf-dev` → `http://localhost:8788`. Còn `npm run dev` vẫn là cách xem thử nhanh nhất khi sửa nội dung.
 
 ## Khác với mẫu gốc
 

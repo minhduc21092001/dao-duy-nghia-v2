@@ -1,5 +1,5 @@
 /*
- * Xác nhận tham dự: dùng chung cho Cloudflare Pages Functions (functions/api/) và máy chủ xem thử (build.js --serve).
+ * Xác nhận tham dự: dùng chung cho Cloudflare Worker (worker/index.mjs) và máy chủ xem thử (build.js --serve).
  *
  * kho: {
  *   set(khoa, obj) -> Promise, xoa(khoa) -> Promise,
