@@ -1,0 +1,10 @@
+# Kết quả build (Cloudflare tự build lại từ mã nguồn)
+website/
+# Ảnh gốc từ studio: rất nặng, chỉ để trên máy
+anh-goc/
+_ban-cu-codex/
+# Link ngắn + xác nhận tham dự tạo khi xem thử trên máy
+lien-ket.local.json
+node_modules/
+.wrangler/
+xac-nhan.local.json

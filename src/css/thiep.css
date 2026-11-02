@@ -1,0 +1,98 @@
+/* Phần bổ sung cho bản tĩnh (bìa phong thư, nhạc, lightbox, form xác nhận tham dự...). CSS gốc của mẫu nằm ở mau-*.css */
+[hidden]{display:none!important}
+html.invitation-locked,html.invitation-locked body{overflow:hidden;height:100%;overscroll-behavior:none}
+body{margin:0;background:#fff}
+button,a{touch-action:manipulation}
+button{cursor:pointer}
+dialog::backdrop{background:#0009}
+#invitation{margin-inline:auto}
+
+/* Bìa phong thư: hiệu ứng mở */
+#cover.opening #seal{animation:seal-break .5s ease-out forwards!important}
+#cover.away #cover-card{animation:envelope-away .8s ease-in forwards}
+#cover.opening .seal-ring{position:absolute;left:50%;top:50px;width:56px;height:56px;border:3px solid #51141966;border-radius:50%;z-index:31;animation:seal-ring .8s ease-out forwards}
+#cover.opening .fly-flower{position:absolute;inset:0;pointer-events:none;z-index:40}
+#cover.opening .fly-flower img{animation:dragon-fly-forward 1.2s ease-in forwards}
+#cover [data-cover-flower]{pointer-events:none}
+#cover-burst{position:absolute;inset:0;z-index:100;pointer-events:none}
+#cover-burst>span{position:absolute;left:50%;top:50%;animation:particle-burst 1.4s cubic-bezier(.25,.46,.45,.94) forwards;text-shadow:0 0 10px currentColor}
+/* Tên khách (link riêng từng khách) dưới chữ "Thân Mời"; không có tên thì ẩn dòng này */
+#cover .khach-moi{color:#511419;font-family:"Lora","Times New Roman",serif;font-weight:600;margin-top:-4px}
+#cover .khach-moi:has([data-khach-moi]:empty){display:none}
+
+#invitation header img,#invitation header span{animation-play-state:running}
+.invitation-locked #invitation header img,.invitation-locked #invitation header span{animation-play-state:paused}
+
+/* Họ tên dài tự xuống dòng (cỡ chữ do thiep.js co lại cho vừa) */
+[data-field="Họ tên chú rể"],[data-field="Họ tên cô dâu"]{white-space:normal!important;width:80%;overflow-wrap:anywhere}
+
+/* Album + lightbox */
+#album-cards>div{aspect-ratio:2/3;transition-duration:800ms}
+#album-cards img{user-select:none}
+#lightbox::backdrop{background:#000e}
+#lightbox{background:transparent;max-width:none;max-height:none;width:100vw;height:100dvh;padding:0;overflow:hidden}
+#lightbox-image{max-height:calc(100dvh - 160px)}
+#lightbox-thumbs button[aria-current=true]{outline:2px solid #511419;outline-offset:2px;opacity:1;transform:scale(1.05)}
+
+#gift-dialog{color:#511419}
+#gift-dialog h3{line-clamp:unset;-webkit-line-clamp:unset;overflow:visible}
+#comments{scrollbar-color:#51141955 transparent}
+#guestbook-form textarea{min-height:56px}
+#toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);max-width:90vw;width:max-content;padding:12px 18px;border-radius:12px;background:#511419;color:#ece4d8;z-index:1000;box-shadow:0 8px 24px #0003;font:14px/1.5 system-ui}
+
+/* Nút nhạc */
+.music-control{position:fixed;bottom:84px;right:24px;width:48px;height:48px;z-index:45;border-radius:50%;background:radial-gradient(circle at 30% 30%,#895057,#511419);color:white;border:2px solid #b18b8d;box-shadow:0 0 0 4px #51141933,0 4px 10px #0003;display:grid;place-items:center}
+.bars{display:flex;align-items:center;gap:3px;height:20px}
+.bars i{width:3px;height:6px;border-radius:3px;background:#fff}
+.music-control.playing i{animation:music-dance .4s ease-in-out infinite alternate}
+.bars i:nth-child(2){animation-delay:.1s!important;height:18px}
+.bars i:nth-child(3){animation-delay:.2s!important;height:11px}
+.bars i:nth-child(4){animation-delay:.3s!important;height:5px}
+@keyframes music-dance{from{height:5px}to{height:20px}}
+/* Nút quà nổi nằm ngay dưới nút loa, cùng góc; bấm mở khung QR mừng cưới */
+.gift-fab{bottom:24px}
+
+/* Hộp thoại xác nhận tham dự */
+.local-rsvp{position:fixed;inset:0;margin:auto;width:calc(100% - 32px);max-width:448px;max-height:90dvh;overflow-y:auto;border:0;border-radius:16px;background:#fff;color:#111827;padding:24px;font:14px/1.5 system-ui;box-shadow:0 20px 60px #0005}
+.local-rsvp::backdrop{background:#0008;backdrop-filter:blur(4px)}
+.local-rsvp h2{font-size:20px;font-weight:600;margin:14px 0 4px}
+.local-rsvp>p{color:#6b7280;font-size:14px;margin-bottom:24px}
+.local-rsvp form{display:grid;gap:16px}
+.local-rsvp label{display:block;font-weight:500;color:#374151}
+.local-rsvp input:not([type=radio]){display:block;width:100%;padding:12px 16px;margin-top:6px;background:#fff;color:#111827;border:1px solid #e5e7eb;border-radius:12px;outline:none;font-size:16px}
+.local-rsvp input:focus{box-shadow:0 0 0 2px #111827}
+.local-rsvp fieldset{border:0;padding:0;min-width:0}
+.local-rsvp legend{font-weight:500;margin-bottom:8px;color:#374151}
+.local-rsvp .rsvp-choice{display:flex;align-items:center;gap:12px;padding:10px 12px;border:2px solid #f3f4f6;border-radius:12px;background:#f9fafb80;cursor:pointer;margin-bottom:8px;min-height:54px}
+.rsvp-choice input{position:absolute;opacity:0;pointer-events:none}
+.rsvp-choice>span{border-radius:50%;width:32px;height:32px;display:grid;place-items:center;background:#e5e7eb;color:#6b7280;flex-shrink:0}
+.local-rsvp .rsvp-choice:has(input:checked){border-color:#511419;background:#fff7eb}
+.rsvp-choice:has(input:checked)>span{background:#511419;color:white}
+.local-rsvp .rsvp-choice:focus-within{outline:2px solid #511419;outline-offset:2px}
+.local-rsvp button[type=submit]{background:#ece4d8;color:#511419;padding:14px;border:0;border-radius:12px;font-size:14px;font-weight:600;box-shadow:0 4px 12px -2px #0003}
+.local-rsvp button:disabled{opacity:.4;cursor:not-allowed}
+.rsvp-close{position:absolute;right:16px;top:16px;border:0;background:#f3f4f6;color:#9ca3af;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;padding:0;font-size:0;transition:background-color .2s,color .2s;cursor:pointer}
+.rsvp-close::before,.rsvp-close::after{content:"";position:absolute;width:14px;height:1.6px;border-radius:2px;background:currentColor;transform:rotate(45deg)}
+.rsvp-close::after{transform:rotate(-45deg)}
+.rsvp-close:hover{background:#ece4d8;color:#511419}
+.rsvp-close:focus-visible{outline:2px solid #511419;outline-offset:3px}
+
+@media(min-width:768px){span:has(>[data-field="Bố chú rể"]),span:has(>[data-field="Mẹ chú rể"]),span:has(>[data-field="Bố cô dâu"]),span:has(>[data-field="Mẹ cô dâu"]){font-size:14px!important}}
+@media(max-width:639px){.music-control{right:16px;bottom:76px}.gift-fab{bottom:16px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:0s!important;scroll-behavior:auto!important}}
+
+/* Địa chỉ hai nhà: mỗi cụm giữa hai dấu phẩy nằm trọn một dòng, không bị cắt giữa chừng */
+[data-field="Địa chỉ nhà trai"],[data-field="Địa chỉ nhà gái"]{white-space:nowrap!important}
+
+/* Thu ngắn khoảng trống giữa bản đồ và sổ lưu bút (điện thoại) */
+@media(max-width:767px){div:has(>section #guestbook-form){margin-top:-48px}}
+
+/* Nơi tiệc: tên nơi tổ chức in to hơn, địa chỉ ở dòng dưới */
+.tiec-ten{display:block;width:max-content;position:relative;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:min(1.3em,3.3vw);font-weight:700;line-height:1.35;margin-bottom:4px}
+
+/* Đếm ngược đến ngày cưới: 4 ô Ngày / Giờ / Phút / Giây */
+.dem-nguoc{display:flex;justify-content:center;gap:10px;margin-top:10px;font-family:"Baskerville","Times New Roman",serif;color:#ece4d8}
+.dem-nguoc>div{display:flex;flex-direction:column;align-items:center;min-width:58px;padding:8px 6px 6px;border:1px solid rgba(236,228,216,.45);border-radius:8px;background:rgba(236,228,216,.06)}
+.dem-nguoc b{font-size:24px;font-weight:500;line-height:1.1;font-variant-numeric:tabular-nums}
+.dem-nguoc small{margin-top:2px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:rgba(236,228,216,.7)}
+@media(min-width:768px){.dem-nguoc{gap:14px}.dem-nguoc>div{min-width:72px}.dem-nguoc b{font-size:30px}}
