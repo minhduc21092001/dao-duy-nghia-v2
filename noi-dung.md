@@ -78,6 +78,8 @@ Thêm/bớt dòng `Album ảnh NN` tuỳ ý (thứ tự hiển thị theo thứ 
 - Album ảnh 09: anh/album/09.jpg
 - Album ảnh 10: anh/album/10.jpg
 - Album ảnh 11: anh/album/11.jpg
+- Album ảnh 12: anh/album/12.jpg
+- Album ảnh 13: anh/album/13.jpg
 
 ## 6. Tiệc cưới
 
@@ -216,12 +218,15 @@ Thiệp nhà gái giống hệt thiệp nhà trai, **trừ các dòng dưới đ
 - Nhà gái - Link Google Maps: https://maps.app.goo.gl/5iZtX7tck2Th7tjq8
 - Nhà gái - Bản đồ - toạ độ: 13.9656736,107.8364508
 - Nhà gái - Hiện lịch trình (có/không): có
-- Nhà gái - Lịch trình 1 - giờ: 10:30
+- Nhà gái - Lịch trình 1 - giờ: 10:00
 - Nhà gái - Lịch trình 1 - hoạt động: Đón khách
 - Nhà gái - Lịch trình 1 - biểu tượng: anh/trang-tri/lich-trinh-don-khach.png
-- Nhà gái - Lịch trình 2 - giờ: 11:00
-- Nhà gái - Lịch trình 2 - hoạt động: Khai tiệc
-- Nhà gái - Lịch trình 2 - biểu tượng: anh/trang-tri/lich-trinh-khai-tiec.png
-- Nhà gái - Lịch trình 3 - giờ: 12:00
-- Nhà gái - Lịch trình 3 - hoạt động: Hát với nhau
-- Nhà gái - Lịch trình 3 - biểu tượng: anh/trang-tri/lich-trinh-hat.png
+- Nhà gái - Lịch trình 2 - giờ: 10:30
+- Nhà gái - Lịch trình 2 - hoạt động: Nghi lễ cưới
+- Nhà gái - Lịch trình 2 - biểu tượng: anh/trang-tri/lich-trinh-nghi-le.png
+- Nhà gái - Lịch trình 3 - giờ: 11:00
+- Nhà gái - Lịch trình 3 - hoạt động: Khai tiệc
+- Nhà gái - Lịch trình 3 - biểu tượng: anh/trang-tri/lich-trinh-khai-tiec.png
+- Nhà gái - Lịch trình 4 - giờ: 12:00
+- Nhà gái - Lịch trình 4 - hoạt động: Hát với nhau
+- Nhà gái - Lịch trình 4 - biểu tượng: anh/trang-tri/lich-trinh-hat.png

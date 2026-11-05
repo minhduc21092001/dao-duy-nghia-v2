@@ -113,6 +113,7 @@
       $('gift-fab').hidden = !!$('gift-button').closest('[hidden]'); // phần hộp quà bị ẩn thì không hiện nút nổi
       loadMap();
       scheduleCarousel();
+      batDauTuCuon();
     }, reduced ? 10 : 1300));
   }
   $('open-invitation').onclick = function (e) { e.preventDefault(); open(); };
@@ -346,6 +347,31 @@
       a.download = 'QR-mung-cuoi-' + (i === 0 ? 'chu-re' : 'co-dau') + ((a.href.match(/\.\w+$/) || ['.png'])[0]);
       document.body.appendChild(a); a.click(); a.remove();
     };
+  });
+
+  /* ---------------------------------------------------------------- thiệp tự cuộn xuống sau khi mở */
+  // Khách chạm/lăn/gõ phím thì dừng; yên tay 5 giây thì cuộn tiếp. Mở hộp thoại thì tạm dừng. Tới cuối trang thì thôi.
+  var AUTO_TOC_DO = 40, autoY = 0, autoLan = 0, autoChay = false, autoNghi = 0;
+  function autoVong(t) {
+    if (!autoChay) return;
+    var dt = Math.min(t - autoLan, 100) / 1000; autoLan = t;
+    var dung = Date.now() < autoNghi || document.hidden || document.querySelector('dialog[open]');
+    if (dung) autoY = window.scrollY;
+    else {
+      var max = document.documentElement.scrollHeight - innerHeight;
+      autoY = Math.min(max, Math.max(autoY, window.scrollY) + AUTO_TOC_DO * dt);
+      window.scrollTo({ top: autoY, behavior: 'instant' });
+      if (autoY >= max - 1) { autoChay = false; return; }
+    }
+    requestAnimationFrame(autoVong);
+  }
+  function batDauTuCuon() {
+    if (reduced || autoChay) return;
+    autoChay = true; autoY = window.scrollY; autoNghi = 0; autoLan = performance.now();
+    requestAnimationFrame(autoVong);
+  }
+  ['wheel', 'touchstart', 'touchmove', 'pointerdown', 'keydown'].forEach(function (ev) {
+    window.addEventListener(ev, function () { autoNghi = Date.now() + 5000; }, { passive: true });
   });
 
   /* ---------------------------------------------------------------- hoa trang trí trôi nhẹ khi cuộn */
