@@ -351,23 +351,25 @@
 
   /* ---------------------------------------------------------------- thiệp tự cuộn xuống sau khi mở */
   // Khách chạm/lăn/gõ phím thì dừng; yên tay 5 giây thì cuộn tiếp. Mở hộp thoại thì tạm dừng. Tới cuối trang thì thôi.
-  var AUTO_TOC_DO = 40, autoY = 0, autoLan = 0, autoChay = false, autoNghi = 0;
+  // Cuộn theo từng pixel nguyên (điện thoại làm tròn vị trí cuộn nên bước lẻ sẽ bị giật), tính theo thời gian thật
+  // để không phụ thuộc tốc độ khung hình; chiều cao trang lấy sẵn, không đọc lại mỗi khung hình.
+  var AUTO_TOC_DO = 60, autoChay = false, autoNghi = 0, autoGoc = 0, autoT0 = 0, autoDaDung = true, autoMax = 0, autoMaxLuc = 0, autoCuoi = -1;
   function autoVong(t) {
     if (!autoChay) return;
-    var dt = Math.min(t - autoLan, 100) / 1000; autoLan = t;
     var dung = Date.now() < autoNghi || document.hidden || document.querySelector('dialog[open]');
-    if (dung) autoY = window.scrollY;
+    if (dung) autoDaDung = true;
     else {
-      var max = document.documentElement.scrollHeight - innerHeight;
-      autoY = Math.min(max, Math.max(autoY, window.scrollY) + AUTO_TOC_DO * dt);
-      window.scrollTo({ top: autoY, behavior: 'instant' });
-      if (autoY >= max - 1) { autoChay = false; return; }
+      if (autoDaDung) { autoDaDung = false; autoGoc = window.scrollY; autoT0 = t; autoCuoi = autoGoc; }
+      if (t - autoMaxLuc > 1000) { autoMax = document.documentElement.scrollHeight - innerHeight; autoMaxLuc = t; }
+      var y = Math.min(autoMax, autoGoc + Math.round(AUTO_TOC_DO * (t - autoT0) / 1000));
+      if (y !== autoCuoi) { autoCuoi = y; window.scrollTo(0, y); }
+      if (y >= autoMax) { autoChay = false; return; }
     }
     requestAnimationFrame(autoVong);
   }
   function batDauTuCuon() {
     if (reduced || autoChay) return;
-    autoChay = true; autoY = window.scrollY; autoNghi = 0; autoLan = performance.now();
+    autoChay = true; autoDaDung = true; autoNghi = 0; autoMaxLuc = 0;
     requestAnimationFrame(autoVong);
   }
   ['wheel', 'touchstart', 'touchmove', 'pointerdown', 'keydown'].forEach(function (ev) {
