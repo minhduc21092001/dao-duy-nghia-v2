@@ -350,30 +350,53 @@
   });
 
   /* ---------------------------------------------------------------- thiệp tự cuộn xuống sau khi mở */
-  // Khách chạm/lăn/gõ phím thì dừng; yên tay 5 giây thì cuộn tiếp. Mở hộp thoại thì tạm dừng. Tới cuối trang thì thôi.
-  // Cuộn theo từng pixel nguyên (điện thoại làm tròn vị trí cuộn nên bước lẻ sẽ bị giật), tính theo thời gian thật
-  // để không phụ thuộc tốc độ khung hình; chiều cao trang lấy sẵn, không đọc lại mỗi khung hình.
-  var AUTO_TOC_DO = 60, autoChay = false, autoNghi = 0, autoGoc = 0, autoT0 = 0, autoDaDung = true, autoMax = 0, autoMaxLuc = 0, autoCuoi = -1;
-  function autoVong(t) {
-    if (!autoChay) return;
-    var dung = Date.now() < autoNghi || document.hidden || document.querySelector('dialog[open]');
-    if (dung) autoDaDung = true;
-    else {
-      if (autoDaDung) { autoDaDung = false; autoGoc = window.scrollY; autoT0 = t; autoCuoi = autoGoc; }
-      if (t - autoMaxLuc > 1000) { autoMax = document.documentElement.scrollHeight - innerHeight; autoMaxLuc = t; }
-      var y = Math.min(autoMax, autoGoc + Math.round(AUTO_TOC_DO * (t - autoT0) / 1000));
-      if (y !== autoCuoi) { autoCuoi = y; window.scrollTo(0, y); }
-      if (y >= autoMax) { autoChay = false; return; }
-    }
-    requestAnimationFrame(autoVong);
+  // Không dùng scrollTo theo từng khung hình: trên iPhone/Zalo lệnh đó đi qua luồng chính nên luôn giật.
+  // Thay vào đó dịch cả <main> bằng transform (GPU tự chạy, mượt kể cả khi trang đang bận), và ngay khi khách
+  // chạm/lăn/gõ phím thì đổi phần đã dịch thành vị trí cuộn thật để khách kéo tay bình thường.
+  // Yên tay 5 giây thì chạy tiếp; đang mở hộp thoại hoặc chuyển tab thì chờ; tới cuối trang thì thôi.
+  var AUTO_TOC_DO = 60, AUTO_NGHI = 5000;
+  var autoNoiDung = document.querySelector('main'), autoBat = false, autoAnim = null, autoGoc = 0, autoHen = 0, autoRong = innerWidth;
+  var parallaxToi = null;
+  function autoMax() { return document.documentElement.scrollHeight - innerHeight; }
+  function autoTraVeCuonThat() {
+    if (!autoAnim) return;
+    var daDich = -new DOMMatrixReadOnly(getComputedStyle(autoNoiDung).transform).m42;
+    autoAnim.onfinish = null; autoAnim.cancel(); autoAnim = null;
+    window.scrollTo(0, window.scrollY + daDich);
+    if (parallaxToi) parallaxToi(window.scrollY, 0);
+  }
+  function autoChay() {
+    clearTimeout(autoHen);
+    if (!autoBat || autoAnim) return;
+    if (document.hidden || document.querySelector('dialog[open]')) { autoHen = setTimeout(autoChay, 1000); return; }
+    autoGoc = window.scrollY;
+    var quang = autoMax() - autoGoc;
+    if (quang <= 1) { autoBat = false; return; }
+    autoAnim = autoNoiDung.animate(
+      [{ transform: 'translateY(0)' }, { transform: 'translateY(' + -quang + 'px)' }],
+      { duration: quang / AUTO_TOC_DO * 1000, easing: 'linear', fill: 'forwards' });
+    autoAnim.onfinish = function () { autoTraVeCuonThat(); autoChay(); }; // ảnh tải thêm làm trang dài ra thì chạy nốt
+    if (parallaxToi && autoGoc < 250) parallaxToi(250, (250 - autoGoc) / AUTO_TOC_DO);
+  }
+  function autoTamDung() {
+    if (!autoBat) return;
+    autoTraVeCuonThat();
+    clearTimeout(autoHen); autoHen = setTimeout(autoChay, AUTO_NGHI);
   }
   function batDauTuCuon() {
-    if (reduced || autoChay) return;
-    autoChay = true; autoDaDung = true; autoNghi = 0; autoMaxLuc = 0;
-    requestAnimationFrame(autoVong);
+    if (reduced || autoBat || !autoNoiDung || !autoNoiDung.animate || !window.DOMMatrixReadOnly) return;
+    autoBat = true; autoChay();
   }
   ['wheel', 'touchstart', 'touchmove', 'pointerdown', 'keydown'].forEach(function (ev) {
-    window.addEventListener(ev, function () { autoNghi = Date.now() + 5000; }, { passive: true });
+    window.addEventListener(ev, autoTamDung, { passive: true });
+  });
+  // Cuộn thật xảy ra lúc đang dịch nghĩa là khách vuốt từ chỗ trang không nhận được chạm (bản đồ); còn lại là quán tính
+  window.addEventListener('scroll', function () { if (!autoAnim || Math.abs(window.scrollY - autoGoc) > 1) autoTamDung(); }, { passive: true });
+  document.addEventListener('visibilitychange', function () { if (document.hidden) autoTamDung(); });
+  window.addEventListener('resize', function () { // xoay máy: chiều cao trang đổi, tính lại quãng đường
+    if (innerWidth === autoRong) return;
+    autoRong = innerWidth;
+    if (autoAnim) { autoTraVeCuonThat(); autoChay(); }
   });
 
   /* ---------------------------------------------------------------- hoa trang trí trôi nhẹ khi cuộn */
@@ -381,7 +404,14 @@
     var flowers = [].slice.call($('invitation').querySelectorAll('span[style]')).filter(function (e) {
       return e.style.willChange === 'transform' && !e.style.animation && e.firstElementChild && e.firstElementChild.tagName === 'SPAN';
     });
-    var parallax = function () { flowers.forEach(function (e) { e.style.transform = 'translateY(' + Math.min(scrollY * 0.16, 40) + 'px)'; }); };
+    // Lúc tự cuộn vị trí cuộn thật đứng yên nên cho hoa tự trôi tới đích, cùng tốc độ với lúc cuộn tay
+    parallaxToi = function (y, giay) {
+      flowers.forEach(function (e) {
+        e.style.transition = giay ? 'transform ' + giay + 's linear' : '';
+        e.style.transform = 'translateY(' + Math.min(y * 0.16, 40) + 'px)';
+      });
+    };
+    var parallax = function () { if (!autoAnim) parallaxToi(scrollY, 0); };
     window.addEventListener('scroll', parallax, { passive: true });
     window.addEventListener('resize', parallax);
     parallax();
